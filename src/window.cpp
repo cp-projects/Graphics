@@ -1,39 +1,24 @@
 #include <iostream>
+#include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-int main(void)
+#include "window.hpp"
+
+int main(int argc, char** argv)
 {
-    GLFWwindow* window;
+    //cap::graphics::window my_window;
 
-    /* Initialize the library */
-    if (!glfwInit())
-        return -1;
+    if(argc == 2){
+        std::cout << argv[1] << std::endl;
+        cap::graphics::window my_window = cap::graphics::window(argv[1]);
+        my_window.Render();
+      }
 
-    /* Create a windowed mode window and its OpenGL context */
-    window = glfwCreateWindow(640, 480, "Hello World", NULL, NULL);
-    if (!window)
-    {
-        glfwTerminate();
-        return -1;
-    }
+    else{
+          cap::graphics::window my_window = cap::graphics::window();
+          my_window.Render();
+         }
 
-    /* Make the window's context current */
-    glfwMakeContextCurrent(window);
-
-    /* Loop until the user closes the window */
-    while (!glfwWindowShouldClose(window))
-    {
-        /* Render here */
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        /* Swap front and back buffers */
-        glfwSwapBuffers(window);
-
-        /* Poll for and process events */
-        glfwPollEvents();
-    }
-
-    glfwTerminate();
     return 0;
 
  }

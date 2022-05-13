@@ -12,6 +12,8 @@ Dependencies:
 
 https://github.com/glfw/glfw
 
+https://github.com/nigels-com/glew.git
+
 
 In accordance with GPL or Compatible Licenses,
 any alterations will be documented below:
