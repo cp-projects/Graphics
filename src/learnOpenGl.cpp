@@ -8,6 +8,24 @@
 #include<string>
 #include<sstream>
 
+#include<cassert>
+
+static void clear_errors(){
+   while(glGetError() != GL_NO_ERROR);
+
+}
+
+static bool check_errors(){
+    bool error_free = true;
+    while(GLenum error = glGetError()){
+        std::cout << "[OpenGL Error] ("
+		<< error << ')' << std::endl;
+	error_free = false;
+      }
+
+    return error_free;
+}
+
 struct shaderProgramSource{
 
     std::string VertexSource;
@@ -108,6 +126,7 @@ int main(){
 
         glfwMakeContextCurrent(window);
 
+	glfwSwapInterval(1);
         
 	glewInit();
 
@@ -118,10 +137,7 @@ int main(){
 	     -0.5f, -0.5f,
              0.5f, -0.5f,
 	     0.5f, 0.5f,
- 
-	     //0.5f, 0.5f,
-	     -0.5f, 0.5f,
-	     //-0.5f, -0.5f
+	     -0.5f, 0.5f
 
 	};
 
@@ -149,14 +165,30 @@ int main(){
 	unsigned int shader = CreateShaders(source.VertexSource, source.FragmentSource);
         glUseProgram(shader);
 
+	int location = glGetUniformLocation(shader, "u_Color");
+        assert(location != -1);
+	glUniform4f(location, 0.2f,0.2f,0.8f,1.0f);
 
+	float r = 0.0f;
+	float increment = 0.05f;
         /* Loop until the user closes the window */
         while (!glfwWindowShouldClose(window)){
 
               /* Render here */
               glClear(GL_COLOR_BUFFER_BIT);
-	      
+
+              glUniform4f(location, r,0.2f,0.8f,1.0f);	      
+	      clear_errors();
               glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+              assert(check_errors());
+
+	      if(r > 1.0f)
+		      increment = -0.05f;
+	      else if(r < 0.0f)
+		      increment = 0.05f;
+
+	      r+=increment;
+
 
               /* Swap front and back buffers */
               glfwSwapBuffers(window);
