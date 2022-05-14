@@ -1,6 +1,7 @@
 #pragma once
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#define GLEW_STATIC
 
 namespace cap{
 
@@ -27,6 +28,14 @@ class window{
 			   
 
 			glfwMakeContextCurrent(m_window);
+
+			//glewExperimental=true;
+			//GLenum err=glewInit();
+                        //if(err!=GLEW_OK)
+                         //std::cout<<"glewInit failed, aborting."<<std::endl;
+  
+			//glewInit();// != GLEW_OK)
+                            //std::cout << "Error" << '\n';
 		    }
 
 
@@ -43,6 +52,9 @@ class window{
 
 
                         glfwMakeContextCurrent(m_window);
+			
+		//	glewInit(); //!= GLEW_OK)
+			    //std::cout << "Error" << '\n';
                     }
 
 
@@ -56,6 +68,9 @@ class window{
 	    const char* m_name;
 
     public:
+            
+
+
 	    void Render(){
 
 		if (!glfwInit())
@@ -66,6 +81,8 @@ class window{
 
 	    
 	        glfwMakeContextCurrent(m_window);
+
+                glewInit();
 
                 /* Loop until the user closes the window */
                 while (!glfwWindowShouldClose(m_window)){
