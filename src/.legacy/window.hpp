@@ -34,7 +34,7 @@ class window{
                         //if(err!=GLEW_OK)
                          //std::cout<<"glewInit failed, aborting."<<std::endl;
   
-			//glewInit();// != GLEW_OK)
+			glewInit();// != GLEW_OK)
                             //std::cout << "Error" << '\n';
 		    }
 
