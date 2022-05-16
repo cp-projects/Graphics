@@ -8,23 +8,11 @@
 #include<string>
 #include<sstream>
 
-#include<cassert>
 
-static void clear_errors(){
-   while(glGetError() != GL_NO_ERROR);
+#include"renderer.hpp"
+#include"vertex_buffer.hpp"
+#include"index_buffer.hpp"
 
-}
-
-static bool check_errors(){
-    bool error_free = true;
-    while(GLenum error = glGetError()){
-        std::cout << "[OpenGL Error] ("
-		<< error << ')' << std::endl;
-	error_free = false;
-      }
-
-    return error_free;
-}
 
 struct shaderProgramSource{
 
@@ -129,8 +117,9 @@ int main(){
 	glfwSwapInterval(1);
         
 	glewInit();
-
 	std::cout << glGetString(GL_VERSION) << std::endl;
+
+  {//Defining Scope So Destructors Don't Run After Terminate
 
         float positions[] = {
 	
@@ -152,23 +141,13 @@ int main(){
 	glGenVertexArrays(1, &vao);
 	glBindVertexArray(vao);
 
+	VertexBuffer vb(positions, 4*2*sizeof(float));
 
-        //set firsh buffer
-	unsigned int buffer;
-	glGenBuffers(1, &buffer);
-	glBindBuffer(GL_ARRAY_BUFFER, buffer);
-	glBufferData(GL_ARRAY_BUFFER, 4*2*sizeof(float), positions, GL_STATIC_DRAW);
-      
 	glEnableVertexAttribArray(0);
 	//connects vertex array to vertex buffer
         glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float)*2, 0);
 
-	unsigned int ibo;
-        glGenBuffers(1, &ibo);
-        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ibo);
-        glBufferData(GL_ELEMENT_ARRAY_BUFFER, 6*sizeof(unsigned int), indicies, GL_STATIC_DRAW);
-	
-	
+	IndexBuffer ib(indicies, 6);	
 
 
         shaderProgramSource source = ParseShader("res/shaders/basic.shader");
@@ -207,6 +186,8 @@ int main(){
               glfwPollEvents();
                     
              }
+
+  }//END SCOPE
 
 	//glDeleteProgram(shader);
 	glfwTerminate();
