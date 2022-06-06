@@ -12,8 +12,9 @@
 #include"renderer.hpp"
 #include"vertex_buffer.hpp"
 #include"index_buffer.hpp"
+#include"shader.hpp"
 
-
+/*
 struct shaderProgramSource{
 
     std::string VertexSource;
@@ -96,6 +97,7 @@ static unsigned int CreateShaders(const std::string& vertexShader, const std::st
     return program;
  
 }
+*/
 
 int main(){
            
@@ -106,7 +108,7 @@ int main(){
         if (!glfwInit())
             exit(1);
 
-        window = glfwCreateWindow(1000,750, "Defaul Window", NULL, NULL);
+        window = glfwCreateWindow(1000,750, "Default Window", NULL, NULL);
 
         if(!window)
             glfwTerminate();
@@ -150,7 +152,7 @@ int main(){
 	IndexBuffer ib(indicies, 6);	
 
 
-        shaderProgramSource source = ParseShader("res/shaders/basic.shader");
+	Shader::shaderProgramSource source = Shader::ParseShader("res/shaders/basic.shader");
 	unsigned int shader = CreateShaders(source.VertexSource, source.FragmentSource);
         glUseProgram(shader);
 
